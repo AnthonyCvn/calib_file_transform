@@ -6,16 +6,19 @@ import linecache
 import numpy as np
 import cv2
 
-def main():
-    input_file_name = "SN17103.yml"
-    image_width = 1280
-    image_height = 720
-    camera_name = "camera"
-    distortion_model = "plumb_bob"
+# Parameters
+input_file_name = "SN17103.yml"
+output_file_name = "camera.yaml"
+image_width = 1280
+image_height = 720
+camera_name = "camera"
+distortion_model = "plumb_bob"
 
+
+def main():
     output_text = ""
 
-    fs = cv2.FileStorage("./SN17103.yml", cv2.FILE_STORAGE_READ)
+    fs = cv2.FileStorage("./"+input_file_name, cv2.FILE_STORAGE_READ)
 
     K1 = fs.getNode("K1").mat()
     K2 = fs.getNode("K2").mat()
@@ -58,10 +61,10 @@ def main():
     output_text += "  data:  " + str(np.reshape(P1, 12).tolist()) + "\n"
 
 
-    with open("camera.yaml", "w") as output_file:
+    with open(output_file_name, "w") as output_file:
         output_file.write(output_text)
 
-    with open("camera.yaml", "r") as verification_file:
+    with open(output_file_name, "r") as verification_file:
         verification_text = verification_file.read()
 
     print("Output file: \n")
